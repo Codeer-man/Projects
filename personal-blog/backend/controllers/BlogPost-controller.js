@@ -58,4 +58,53 @@ const CreatePost = async (req, res, next) => {
     return next(error);
   }
 };
-module.exports = { getPost, CreatePost };
+
+const UpdatePost = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const updatedValue = req.body;
+    const UpdatingPost = await Blogpost.findByIdAndUpdate(id, updatedValue, {
+      new: true,
+    });
+
+    if (!UpdatingPost) {
+      const error = new Error("Id not found");
+      error.statusCode = 404;
+      return next(error);
+    }
+
+    return res.status(200).json({
+      sucess: true,
+      message: "Post Updated sucessfully",
+      data: UpdatingPost,
+    });
+  } catch (error) {
+    console.log(("Invalid server error", error));
+    return next(error);
+  }
+};
+
+const DeletePost = async (req, res, next) => {
+  try {
+    const {id} = req.params
+    const {title} = req.body
+
+    const deleteThePost = await Blogpost.findByIdAndDelete({$or:[{_id:id},{title} ]  });
+
+    if (!deleteThePost) {
+      const error = new Error("Post not found");
+      error.statusCode = 404;
+      return next(error);
+    }
+    return res.status(200).json({
+      sucess:true,
+      message: "Post has been deleted",
+      data: deleteThePost
+    })
+
+  } catch (error) {
+    console.log("Invalid server error:", error);
+    return next(error);
+  }
+};
+module.exports = { getPost, CreatePost, UpdatePost, DeletePost };

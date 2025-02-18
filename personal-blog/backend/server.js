@@ -6,7 +6,8 @@ const path = require("path");
 // const { default: mongoose } = require("mongoose");
 const ConnectDB = require("./utils/ConnectDB");
 const errorhandling = require("./middleware/errorhandling-middleware");
-const route = require("./routes/BlodPost-route");
+const blogRoute = require("./routes/BlodPost-route");
+const authRoute = require("./routes/auth-route");
 
 const app = express();
 
@@ -14,7 +15,7 @@ const app = express();
 const corpsOptions = {
   origin: " http://localhost:5173",
   methods: "GET,POST,PUT,DELETE,PATCH,HEAD",
-  Credential: true,
+  Credentials: true,
   allowedHeaders: ["Content-Type : Application/json"],
 };
 app.use(cors(corpsOptions));
@@ -24,9 +25,11 @@ ConnectDB();
 
 // middleware
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "public")));
+// app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/api/auth", route);
+// router
+app.use("/api/blog", blogRoute);
+app.use("/api/auth", authRoute);
 
 app.use(errorhandling);
 
