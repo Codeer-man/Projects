@@ -1,6 +1,7 @@
 require("dotenv").config();
 // const { log } = require("console");
 const express = require("express");
+const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const path = require("path");
 // const { default: mongoose } = require("mongoose");
@@ -8,6 +9,7 @@ const ConnectDB = require("./utils/ConnectDB");
 const errorhandling = require("./middleware/errorhandling-middleware");
 const blogRoute = require("./routes/BlodPost-route");
 const authRoute = require("./routes/auth-route");
+const { cookies } = require("next/headers");
 
 const app = express();
 
@@ -25,6 +27,7 @@ ConnectDB();
 
 // middleware
 app.use(express.json());
+app.use(cookieParser());
 // app.use(express.static(path.join(__dirname, "public")));
 
 // router

@@ -1,4 +1,5 @@
 const User = require("../model/auth-model");
+const jwt = require("jsonwebtoken");
 
 const CreateUser = async (req, res, next) => {
   try {
@@ -26,7 +27,7 @@ const CreateUser = async (req, res, next) => {
     return res.status(201).json({
       sucess: true,
       message: "New User has been created",
-      token: await CreateNewUser.generateToken(),
+      token: await CreateNewUser.generateAccessToken(),
       data: CreateNewUser,
     });
   } catch (error) {
@@ -55,11 +56,19 @@ const loginUser = async (req, res, next) => {
         message: "Password doesnot match",
       });
     }
+    const accessToken = await getUser.generateAccessToken();
+    const refreshToken = await getUser.generateRefreshToken();
+
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", // Set secure flag in production
+      sameSite: "strict",
+    });
 
     return res.status(200).json({
       sucess: true,
       message: "Login sucessfull",
-      token: await getUser.generateToken(),
+      token: accessToken,
       data: getUser,
     });
   } catch (error) {
@@ -83,4 +92,31 @@ const GetUser = async (req, res) => {
   }
 };
 
-module.exports = { CreateUser, loginUser, GetUser };
+const refreshToken = async (req, res) => {
+  try {
+    const { refreshToken } = req.cookies;
+    if (!refreshToken) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized",
+      });
+    }
+    const verifyToken = jwt.verify(
+      refreshToken,
+      process.env.JWT_REFRESH_SECRET_KEY
+    );
+    const user = await User.findOne({ _id: verifyToken.userId });
+
+    if (!user || user.refreshToken !== refreshToken) {
+      return res.status(403).json({ message: "Invalid refresh token" });
+    }
+
+    const newAccessToken = user.generateAccessToken();
+    return res.json({ accessToken: newAccessToken });
+  } catch (error) {
+    console.log("Invalid refresh token", error);
+    return res.status(403).json({ message: "Invalid refresh token" });
+  }
+};
+
+module.exports = { CreateUser, loginUser, GetUser, refreshToken };

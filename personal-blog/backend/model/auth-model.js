@@ -62,7 +62,24 @@ userSchema.methods.comparePassword = function (password) {
 };
 
 // generate token
-userSchema.methods.generateToken = function () {
+userSchema.methods.generateAccessToken = function () {
+  try {
+    return jwt.sign(
+      {
+        userId: this._id.toString(),
+        username: this.username,
+        email: this.email,
+        role: this.role,
+      },
+      process.env.JWT_SECRET_KEY,
+      { expiresIn: "30s" }
+    );
+  } catch (error) {
+    console.log("Token not generated", error);
+  }
+};
+
+userSchema.methods.generateRefreshToken = function () {
   try {
     return jwt.sign(
       {
@@ -75,7 +92,7 @@ userSchema.methods.generateToken = function () {
       { expiresIn: "30d" }
     );
   } catch (error) {
-    console.log("Token not generated", error);
+    console.error("Token not generated", error);
   }
 };
 
