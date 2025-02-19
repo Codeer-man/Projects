@@ -68,4 +68,19 @@ const loginUser = async (req, res, next) => {
   }
 };
 
-module.exports = { CreateUser, loginUser };
+const GetUser = async (req, res) => {
+  try {
+    const Userdata = req.user;
+
+    return res.status(200).json({
+      success: true,
+      message: "User data retrieved successfully",
+      data: Userdata,
+    });
+  } catch (error) {
+    console.error("Invalid server error", error);
+    return next(error);
+  }
+};
+
+module.exports = { CreateUser, loginUser, GetUser };
