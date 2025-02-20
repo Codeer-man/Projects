@@ -88,7 +88,7 @@ userSchema.methods.generateRefreshToken = function () {
         email: this.email,
         role: this.role,
       },
-      process.env.JWT_SECRET_KEY,
+      process.env.JWT_REFRESH_SECRET_KEY,
       { expiresIn: "30d" }
     );
   } catch (error) {
