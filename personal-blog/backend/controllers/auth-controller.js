@@ -106,17 +106,19 @@ const refreshToken = async (req, res) => {
       refreshToken,
       process.env.JWT_REFRESH_SECRET_KEY
     );
+    console.log("refresh token", verifyToken);
+
     const user = await User.findOne({ _id: verifyToken.userId });
 
-    if (!user || user.refreshToken !== refreshToken) {
-      return res.status(403).json({ message: "Invalid refresh token" });
+    if (!user) {
+      return res.status(403).json({ message: "Invalid refresh token in try" });
     }
 
     const newAccessToken = user.generateAccessToken();
     return res.json({ accessToken: newAccessToken });
   } catch (error) {
     console.log("Invalid refresh token", error);
-    return res.status(403).json({ message: "Invalid refresh token" });
+    return res.status(403).json({ message: "Invalid refresh token in catch" });
   }
 };
 
