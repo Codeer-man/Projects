@@ -2,24 +2,18 @@ const Blogpost = require("../model/blogpost");
 
 const getPost = async (req, res, next) => {
   try {
-    const { title, author } = req.body;
+    const findPost = await Blogpost.find();
 
-    if (!title) {
-      const error = new Error("Title is required");
-      error.statusCode = 404;
+    if (!findPost) {
+      const error = new Error("No posts found");
+      error.statusCode(404);
       return next(error);
     }
 
-    const findPost = await Blogpost.find({ title, author }).populate("author");
-
-    if (!findPost.length) {
-      const error = new Error("Post not found");
-      error.statusCode = 404;
-      return next(error);
-    }
     return res.status(200).json({
-      message: "Post found",
+      message: "Posts fetched successfully",
       data: findPost,
+      sucess: true,
     });
   } catch (error) {
     console.log("Server Error", error);
@@ -86,10 +80,12 @@ const UpdatePost = async (req, res, next) => {
 
 const DeletePost = async (req, res, next) => {
   try {
-    const {id} = req.params
-    const {title} = req.body
+    const { id } = req.params;
+    const { title } = req.body;
 
-    const deleteThePost = await Blogpost.findByIdAndDelete({$or:[{_id:id},{title} ]  });
+    const deleteThePost = await Blogpost.findByIdAndDelete({
+      $or: [{ _id: id }, { title }],
+    });
 
     if (!deleteThePost) {
       const error = new Error("Post not found");
@@ -97,11 +93,10 @@ const DeletePost = async (req, res, next) => {
       return next(error);
     }
     return res.status(200).json({
-      sucess:true,
+      sucess: true,
       message: "Post has been deleted",
-      data: deleteThePost
-    })
-
+      data: deleteThePost,
+    });
   } catch (error) {
     console.log("Invalid server error:", error);
     return next(error);

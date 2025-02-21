@@ -38,9 +38,10 @@ const corpsOptions = {
   origin: " http://localhost:5173",
   methods: "GET,POST,PUT,DELETE,PATCH,HEAD",
   Credentials: true,
-  allowedHeaders: ["Content-Type : Application/json"],
+  allowedHeaders: ["Content-Type", "Authorization"],
 };
 app.use(cors(corpsOptions));
+// app.options("*", cors());
 
 // connect to database
 ConnectDB();
