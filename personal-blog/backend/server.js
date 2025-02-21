@@ -1,4 +1,6 @@
 require("dotenv").config();
+// require("./passport")(passport);
+
 // const { log } = require("console");
 const express = require("express");
 // cookie
@@ -24,7 +26,12 @@ const authRoute = require("./routes/auth-route");
 const passport = require("./config/passport");
 // const { default: mongoose } = require("mongoose");
 
+// session
+const session = require("express-session");
+
 const app = express();
+// cookie
+app.use(cookieParser());
 
 // cors config middleware
 const corpsOptions = {
@@ -43,10 +50,18 @@ app.use(express.json());
 
 // path
 app.use(express.static(path.join(__dirname, "public")));
-// cookie
-app.use(cookieParser());
 
 // express-session
+app.use(
+  session({
+    secret: process.env.session_secret_key,
+    resave: true,
+    saveUninitialized: true,
+    cookie: {
+      secure: false,
+    },
+  })
+);
 
 // passport above routes under express-session
 app.use(passport.initialize());

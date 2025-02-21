@@ -25,6 +25,19 @@ passport.use(
   )
 );
 
+
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser(async (id, done) => {
+  try {
+    const user = await User.findById(id);
+    done(null, user);
+  } catch (error) {
+    done(error);
+  }
+});
 module.exports = passport;
 
 // In the above code, passport-local is used for local authentication, where users provide their email and password. The strategy is configured to use the email field for username. The callback function checks if the user exists in the database, and if the password matches the stored hash. If the credentials are valid, the user is authenticated and passed to the next middleware function. If not, appropriate error messages are returned.

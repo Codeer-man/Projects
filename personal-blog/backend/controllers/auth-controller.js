@@ -65,6 +65,12 @@ const loginUser = async (req, res, next) => {
       sameSite: "strict",
     });
 
+    res.cookie("accessToken", accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", // Set secure flag in production
+      sameSite: "strict",
+    });
+
     return res.status(200).json({
       sucess: true,
       message: "Login sucessfull",
