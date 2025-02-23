@@ -56,10 +56,10 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(
   session({
     secret: process.env.session_secret_key,
-    resave: true,
-    saveUninitialized: true,
+    resave: false,
+    saveUninitialized: false,
     cookie: {
-      secure: false,
+      secure: true,
     },
   })
 );

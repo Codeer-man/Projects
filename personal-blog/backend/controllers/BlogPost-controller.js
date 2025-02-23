@@ -21,6 +21,24 @@ const getPost = async (req, res, next) => {
   }
 };
 
+const getPostById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const findOnePost = await Blogpost.findById(id);
+
+    if (!findOnePost)
+      return res.status(404).json({ message: "No posts found" });
+    return res.status(200).json({
+      message: "Posts fetched successfully",
+      data: findOnePost,
+      sucess: true,
+    });
+  } catch (error) {
+    console.log("Server Error", error);
+    return next(error);
+  }
+};
+
 const CreatePost = async (req, res, next) => {
   try {
     const { title, content, author } = req.body;
@@ -102,4 +120,4 @@ const DeletePost = async (req, res, next) => {
     return next(error);
   }
 };
-module.exports = { getPost, CreatePost, UpdatePost, DeletePost };
+module.exports = { getPost, CreatePost, UpdatePost, DeletePost, getPostById };
