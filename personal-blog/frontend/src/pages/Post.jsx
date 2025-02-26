@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
 import LoadingSpinner from "../components/LoadingSpinner";
 
 export default function Post() {
@@ -8,6 +9,8 @@ export default function Post() {
   const [blogPost, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchdata = async () => {
@@ -53,6 +56,7 @@ export default function Post() {
           prevdata.filter((user) => user.id !== _id);
           console.log("data has been deleted");
         });
+        navigate("/");
       }
     } catch (error) {
       console.log("Error deleting data", error);
@@ -61,7 +65,7 @@ export default function Post() {
   };
 
   if (loading) {
-    return <LoadingSpinner/>;
+    return <LoadingSpinner />;
   }
   if (error) {
     return <div>Error: {error}</div>;
@@ -90,7 +94,13 @@ export default function Post() {
                 {new Date(blogPost.createdAt).toLocaleDateString()}
               </small>
             </div>
-            <button onClick={() => DeletePost(id)}>Delete</button> <br />
+            <button
+              className="cursor-pointer bg-amber-400 text-amber-700"
+              onClick={() => DeletePost(id)}
+            >
+              Delete
+            </button>{" "}
+            <br />
             <Link to={`/api/blog/${id}/update`}>Edit</Link>
           </div>
         </div>
