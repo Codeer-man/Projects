@@ -74,10 +74,20 @@ const CreatePost = async (req, res, next) => {
 const UpdatePost = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const updatedValue = req.body;
-    const UpdatingPost = await Blogpost.findByIdAndUpdate(id, updatedValue, {
-      new: true,
-    });
+
+    const existingPost = await Blogpost.findById(id);
+    if(!existingPost) {
+      const error = new Error("Post not found");
+      error.statusCode = 404;
+      return next(error);
+    }
+
+    const PostData = {
+      title: req.body.title || existingPost.title,
+      content: req.body.content || existingPost.content,
+      author: req.body.author || existingPost.author,
+    }
+    const UpdatingPost = await Blogpost.findByIdAndUpdate(id,PostData);
 
     if (!UpdatingPost) {
       const error = new Error("Id not found");
@@ -99,11 +109,8 @@ const UpdatePost = async (req, res, next) => {
 const DeletePost = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { title } = req.body;
 
-    const deleteThePost = await Blogpost.findByIdAndDelete({
-      $or: [{ _id: id }, { title }],
-    });
+    const deleteThePost = await Blogpost.findByIdAndDelete({ _id: id });
 
     if (!deleteThePost) {
       const error = new Error("Post not found");
