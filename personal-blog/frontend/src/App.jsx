@@ -13,6 +13,8 @@ import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 // not found
 import NotFound from "./pages/notfound";
+// registration
+// import Login from "./components/registration/login";
 export default function App() {
   return (
     <Router>
@@ -23,7 +25,9 @@ export default function App() {
         <Route path="/create" element={<CreatePost />} />
         <Route path="/view-post/:id" element={<ViewPost />} />
         <Route path="/blog/:id/update" element={<EditPost />} />
-
+        {/* registration  */}
+        {/* <Route path="/login" element={<Login />} /> */}
+        {/* not fount  */}
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
