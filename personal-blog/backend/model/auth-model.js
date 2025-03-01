@@ -72,7 +72,7 @@ userSchema.methods.generateAccessToken = function () {
         role: this.role,
       },
       process.env.JWT_SECRET_KEY,
-      { expiresIn: "30s" }
+      { expiresIn: "1h" }
     );
   } catch (error) {
     console.log("Token not generated", error);

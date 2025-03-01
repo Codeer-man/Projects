@@ -1,7 +1,11 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { useAuth } from "../store/auth";
+import Login from "./registration/login";
+import Logout from "./registration/logout";
 
 export default function Navbar() {
+  const { loggedIn, logout } = useAuth();
   return (
     <nav className="flex justify-between items-center h-auto w-screen p-5 bg-gray-100 shadow-md">
       <h1 className="text-xl font-bold">Logo</h1>
@@ -47,6 +51,24 @@ export default function Navbar() {
           >
             Create Blog
           </NavLink>
+        </li>
+        <li>
+          {loggedIn ? (
+            <NavLink to="/logout">Logout</NavLink>
+          ) : (
+            <NavLink
+              to="/login"
+              className={({ isActive }) =>
+                `px-4 py-2 transition-colors duration-300 rounded ${
+                  isActive
+                    ? "text-blue-500 font-bold border-b-2 border-blue-500"
+                    : "text-gray-700"
+                } hover:text-blue-600`
+              }
+            >
+              Login
+            </NavLink>
+          )}
         </li>
       </ul>
     </nav>

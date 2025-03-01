@@ -55,7 +55,7 @@ const CreatePost = async (req, res, next) => {
 
     const newPost = new Blogpost({
       title,
-      author,
+      author: req.id,
       content,
     });
     await newPost.save();
@@ -76,7 +76,7 @@ const UpdatePost = async (req, res, next) => {
     const { id } = req.params;
 
     const existingPost = await Blogpost.findById(id);
-    if(!existingPost) {
+    if (!existingPost) {
       const error = new Error("Post not found");
       error.statusCode = 404;
       return next(error);
@@ -86,8 +86,8 @@ const UpdatePost = async (req, res, next) => {
       title: req.body.title || existingPost.title,
       content: req.body.content || existingPost.content,
       author: req.body.author || existingPost.author,
-    }
-    const UpdatingPost = await Blogpost.findByIdAndUpdate(id,PostData);
+    };
+    const UpdatingPost = await Blogpost.findByIdAndUpdate(id, PostData);
 
     if (!UpdatingPost) {
       const error = new Error("Id not found");

@@ -14,7 +14,9 @@ import Navbar from "./components/Navbar";
 // not found
 import NotFound from "./pages/notfound";
 // registration
-// import Login from "./components/registration/login";
+import Login from "./components/registration/login";
+import Register from "./components/registration/register";
+import Logout from "./components/registration/logout";
 export default function App() {
   return (
     <Router>
@@ -26,7 +28,9 @@ export default function App() {
         <Route path="/view-post/:id" element={<ViewPost />} />
         <Route path="/blog/:id/update" element={<EditPost />} />
         {/* registration  */}
-        {/* <Route path="/login" element={<Login />} /> */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="logout" element={<Logout />} />
         {/* not fount  */}
         <Route path="*" element={<NotFound />} />
       </Routes>

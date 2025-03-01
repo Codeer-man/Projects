@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useAuth } from "../../store/auth";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import LoadingSpinner from "../LoadingSpinner";
 
 export default function Login() {
@@ -29,10 +29,11 @@ export default function Login() {
       const data = await response.json();
       if (response.ok) {
         storeTokenInLS(data.token);
-        setForm({ username: "", password: "" });
-        toast.success("Logged in successfully!");
         navigate("/");
+        toast.success(data.message || "Login succeeded");
+        setForm({ username: "", password: "" });
       } else {
+        console.log(data.message);
         toast.error(data.message || "Login failed. Please try again.");
       }
     } catch (error) {
@@ -65,11 +66,12 @@ export default function Login() {
         <input
           type="password"
           value={form.password}
-          name="password" 
+          name="password"
           onChange={handleChange}
           placeholder="Password"
           required
         />
+        <Link to="/register">Create a Account</Link> <br />
         <button type="submit" disabled={loading}>
           {loading ? <LoadingSpinner /> : "Login"}
         </button>

@@ -10,7 +10,7 @@ const blogValidation = z.object({
     .min(10, { message: "minimum 10 characters is required" })
     .trim(),
 
-  author: z.string({ message: "Author is required" }),
+  // author: z.string({ message: "Author is required" }),
 });
 
 module.exports = blogValidation;

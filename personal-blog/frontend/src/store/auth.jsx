@@ -9,9 +9,17 @@ export const AuthProvider = ({ children }) => {
   const authorizeToken = `Bearer ${token}`;
   const [user, setUser] = useState(null);
 
+  let loggedIn = !!token;
+
   const storeTokenInLS = (serverToken) => {
     localStorage.setItem("token", serverToken);
     setToken(serverToken);
+  };
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    setUser(null);
+    setToken("");
   };
 
   const userAuthentication = async () => {
@@ -56,7 +64,9 @@ export const AuthProvider = ({ children }) => {
       {loading ? (
         <LoadingSpinner />
       ) : (
-        <AuthContext.Provider value={{ user, storeTokenInLS }}>
+        <AuthContext.Provider
+          value={{ user, storeTokenInLS, logout, loggedIn }}
+        >
           {children}
         </AuthContext.Provider>
       )}
