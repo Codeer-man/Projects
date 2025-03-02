@@ -46,12 +46,6 @@ const CreatePost = async (req, res, next) => {
     // const ExistingPost = await Blogpost.findOne({
     //   $or: [{ title }, { content }],
     // });
-    const ExistingPost = await Blogpost.findOne({ title });
-    if (ExistingPost) {
-      const error = new Error("Title already Exists");
-      error.statusCode(400);
-      return next(error);
-    }
 
     const newPost = new Blogpost({
       title,

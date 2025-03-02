@@ -65,7 +65,7 @@ export const AuthProvider = ({ children }) => {
         <LoadingSpinner />
       ) : (
         <AuthContext.Provider
-          value={{ user, storeTokenInLS, logout, loggedIn }}
+          value={{ user, storeTokenInLS, logout, loggedIn, authorizeToken }}
         >
           {children}
         </AuthContext.Provider>

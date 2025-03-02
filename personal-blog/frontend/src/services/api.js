@@ -1,5 +1,6 @@
 const API_URL = "http://localhost:5000/api";
 
+
 export const fetchBlog = async () => {
   try {
     const response = await fetch(`${API_URL}/blog/getpost`, {
@@ -34,5 +35,3 @@ export const fetchSingleBlog = async () => {
     return null;
   }
 };
-
-

@@ -8,6 +8,8 @@ export const useBlog = () => {
 
   useEffect(() => {
     const loadBlog = async () => {
+      setLoading(true);
+      setError(null);
       try {
         const response = await getBlog();
         setBlog(response);

@@ -36,7 +36,7 @@ app.use(cookieParser());
 // cors config middleware
 const corpsOptions = {
   origin: " http://localhost:5173",
-  methods: "GET,POST,PUT,DELETE,PATCH,HEAD",
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD"],
   Credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"],
 };
