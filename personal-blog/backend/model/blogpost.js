@@ -12,12 +12,21 @@ const BlogpostSchena = new mongoose.Schema(
       type: String,
       required: [true, "content is requied"],
       trim: true,
-      unique: true,
     },
     author: {
       type: mongoose.Schema.Types.ObjectId,
       required: [true, "auther is requied"],
       ref: "User",
+    },
+    image: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    publicId: {
+      type: String,
+      required: true,
+      trim: true,
     },
     createAt: {
       type: Date,
@@ -32,6 +41,6 @@ const BlogpostSchena = new mongoose.Schema(
 );
 
 // index for better query Selection
-// BlogpostSchena.indexes({ title: 1 });
+BlogpostSchena.indexes({ title: 1 });
 
 module.exports = mongoose.model("Blogpost", BlogpostSchena);
