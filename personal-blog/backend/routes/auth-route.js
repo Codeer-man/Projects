@@ -20,4 +20,5 @@ router.post("/login", validation(LoginValidation), loginUser);
 router.get("/getData", authMiddleware, GetUser);
 router.get("/refreshToken", refreshToken);
 
+
 module.exports = router;

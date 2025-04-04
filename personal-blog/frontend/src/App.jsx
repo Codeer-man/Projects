@@ -17,6 +17,8 @@ import NotFound from "./pages/notfound";
 import Login from "./components/registration/login";
 import Register from "./components/registration/register";
 import Logout from "./components/registration/logout";
+import Profile from "./pages/Profile";
+import Myblog from "./pages/Myblog";
 export default function App() {
   return (
     <Router>
@@ -31,6 +33,9 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="logout" element={<Logout />} />
+
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/MyBlog/:author" element={<Myblog />} />
         {/* not fount  */}
         <Route path="*" element={<NotFound />} />
       </Routes>

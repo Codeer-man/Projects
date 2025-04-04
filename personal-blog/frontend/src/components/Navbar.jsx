@@ -1,13 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
+import { CgProfile } from "react-icons/cg";
 import { useAuth } from "../store/auth";
-import Login from "./registration/login";
-import Logout from "./registration/logout";
 
 export default function Navbar() {
   const { loggedIn, logout } = useAuth();
   return (
-    <nav className="flex justify-between items-center h-auto w-screen p-5 bg-gray-100 shadow-md">
+    <nav className="flex justify-between items-center h-auto w-screen p-5 bg-gray-100 shadow-md ">
       <h1 className="text-xl font-bold">Logo</h1>
       <ul className="flex items-center justify-around gap-9">
         <li>
@@ -54,7 +53,10 @@ export default function Navbar() {
         </li>
         <li>
           {loggedIn ? (
-            <NavLink to="/logout">Logout</NavLink>
+            // <NavLink to="/logout">Logout</NavLink>
+            <NavLink to="/profile">
+              <CgProfile />{" "}
+            </NavLink>
           ) : (
             <NavLink
               to="/login"

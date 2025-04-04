@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+
 const BlogpostSchena = new mongoose.Schema(
   {
     title: {
@@ -15,8 +16,11 @@ const BlogpostSchena = new mongoose.Schema(
     },
     author: {
       type: mongoose.Schema.Types.ObjectId,
-      required: [true, "auther is requied"],
       ref: "User",
+    },
+    url: {
+      type: String,
+      required: true,
     },
     image: {
       type: String,
@@ -27,14 +31,6 @@ const BlogpostSchena = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
-    },
-    createAt: {
-      type: Date,
-      default: Date.now,
-    },
-    updatedAt: {
-      type: Date,
-      default: Date.now,
     },
   },
   { timestamps: true }

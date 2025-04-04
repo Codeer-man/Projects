@@ -5,13 +5,12 @@ const uploadToCloudinary = async (filepath) => {
     const result = await cloudinary.uploader.upload(filepath);
 
     return {
-      url: result.secure_url,
+      url: result.url,
       publicId: result.public_id,
     };
   } catch (error) {
-    console.error("Error while uploading to cloudinary", error);
-    throw new Error("Failed to upload image to cloudinary");
+    console.error("not able to upload to cloudinary");
+    throw new Error(error);
   }
 };
-
-module.exports ={ uploadToCloudinary};
+module.exports = { uploadToCloudinary };

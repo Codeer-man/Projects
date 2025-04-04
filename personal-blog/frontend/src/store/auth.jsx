@@ -8,6 +8,7 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("token") || "");
   const authorizeToken = `Bearer ${token}`;
   const [user, setUser] = useState(null);
+  const [author, setAuthor] = useState(null);
 
   let loggedIn = !!token;
 
@@ -35,6 +36,8 @@ export const AuthProvider = ({ children }) => {
       if (response.ok) {
         const data = await response.json();
         setUser(data);
+        setAuthor(data.data._id);
+        // console.log(data.data._id);
       } else {
         setUser(null);
         localStorage.removeItem("token");
@@ -65,7 +68,14 @@ export const AuthProvider = ({ children }) => {
         <LoadingSpinner />
       ) : (
         <AuthContext.Provider
-          value={{ user, storeTokenInLS, logout, loggedIn, authorizeToken }}
+          value={{
+            user,
+            storeTokenInLS,
+            logout,
+            loggedIn,
+            authorizeToken,
+            author,
+          }}
         >
           {children}
         </AuthContext.Provider>
