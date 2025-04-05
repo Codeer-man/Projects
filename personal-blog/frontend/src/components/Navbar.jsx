@@ -1,13 +1,26 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { CgProfile } from "react-icons/cg";
 import { useAuth } from "../store/auth";
+// import { logo } from "../../public/logo.png";
 
 export default function Navbar() {
   const { loggedIn, logout } = useAuth();
+  const navigate = useNavigate();
+
+  function homepage() {
+    navigate("/");
+  }
+
   return (
-    <nav className="flex justify-between items-center h-auto w-screen p-5 bg-gray-100 shadow-md ">
-      <h1 className="text-xl font-bold">Logo</h1>
+    <nav className="flex justify-between items-center h-auto w-screen p-5 bg-gray-300 shadow-md ">
+      <h2
+        onClick={homepage}
+        className="text-xl font-bold tracking-wide cursor-pointer"
+      >
+        <span className="text-red-500">/</span>RAREBLOCKS
+      </h2>
+      {/* <img src={logo} alt="logo" /> */}
       <ul className="flex items-center justify-around gap-9">
         <li>
           <NavLink
@@ -55,7 +68,7 @@ export default function Navbar() {
           {loggedIn ? (
             // <NavLink to="/logout">Logout</NavLink>
             <NavLink to="/profile">
-              <CgProfile />{" "}
+              <CgProfile className="mr-8" />{" "}
             </NavLink>
           ) : (
             <NavLink

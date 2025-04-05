@@ -32,7 +32,7 @@ export default function App() {
         {/* registration  */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="logout" element={<Logout />} />
+        <Route path="/logout" element={<Logout />} />
 
         <Route path="/profile" element={<Profile />} />
         <Route path="/MyBlog/:author" element={<Myblog />} />

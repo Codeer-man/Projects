@@ -155,7 +155,27 @@ const userBlog = async (req, res) => {
       message: "User blog found",
       data: userData,
     });
-  } catch (error) {}
+  } catch (error) {
+    console.log("Invalid server error:", error);
+    return next(error);
+  }
+};
+
+const postCounter = async (req, res) => {
+  try {
+    const { author } = req.params;
+    const count = await Blogpost.countDocuments({ author: author });
+
+    return res.status(200).json({
+      success: true,
+      message: "Blog post count retrieved successfully",
+      count: count,
+      author: author,
+    });
+  } catch (error) {
+    console.error("Error counting posts:", error);
+    return next(error);
+  }
 };
 
 module.exports = {
@@ -165,4 +185,5 @@ module.exports = {
   DeletePost,
   getPostById,
   userBlog,
+  postCounter,
 };

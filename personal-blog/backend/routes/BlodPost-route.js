@@ -6,6 +6,7 @@ const {
   UpdatePost,
   DeletePost,
   userBlog,
+  postCounter,
 } = require("../controllers/BlogPost-controller");
 const blogValidation = require("../validation/blog-validation");
 const validation = require("../middleware/validation-middleware");
@@ -31,4 +32,5 @@ route.post("/createPost");
 route.patch("/:id/update", UpdatePost);
 route.delete("/:id/delete", DeletePost);
 
+route.get("/count/:author", postCounter);
 module.exports = route;

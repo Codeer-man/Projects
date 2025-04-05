@@ -53,3 +53,21 @@ export const userBlog = async (author) => {
     return console.error("Invalid server error", error);
   }
 };
+
+export const postCounter = async (author) => {
+  try {
+    const count = await fetch(`${API_URL}/blog/count/${author}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (!count.ok) {
+      throw new Error("couldnot count or get the count data");
+    }
+    return count;
+  } catch (error) {
+    console.error("Invalid serve error");
+    throw new Error(error);
+  }
+};
