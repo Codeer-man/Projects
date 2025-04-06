@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function sidebar({ expand, setExpand }) {
+export default function Sidebar({ expand, setExpand }) {
   return (
     <div
       className={`bg-amber-200 flex flex-col items-center ${

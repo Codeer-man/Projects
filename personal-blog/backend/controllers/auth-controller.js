@@ -61,13 +61,13 @@ const loginUser = async (req, res, next) => {
 
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // Set secure flag in production
+      secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
     });
 
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // Set secure flag in production
+      secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
     });
 
@@ -96,6 +96,24 @@ const GetUser = async (req, res) => {
   } catch (error) {
     console.error("Invalid server error", error);
     return next(error);
+  }
+};
+
+const allUser = async (req, res) => {
+  try {
+    const users = await User.find();
+    if (!users) {
+      return console.error("Users not found");
+    }
+    return res
+      .status(200)
+      .json({ message: "All the Users are found", data: users });
+  } catch (error) {
+    console.error("Invalid serve error", error);
+    return res.status(500).json({
+      sucess: false,
+      message: "data Not found",
+    });
   }
 };
 
@@ -128,4 +146,4 @@ const refreshToken = async (req, res) => {
   }
 };
 
-module.exports = { CreateUser, loginUser, GetUser, refreshToken };
+module.exports = { CreateUser, loginUser, GetUser, refreshToken, allUser };

@@ -1,13 +1,11 @@
 const mongoose = require("mongoose");
 
-
 const BlogpostSchena = new mongoose.Schema(
   {
     title: {
       type: String,
       required: [true, "title is requied"],
       trim: true,
-      unique: true,
     },
     content: {
       type: String,

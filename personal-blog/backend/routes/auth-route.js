@@ -4,6 +4,7 @@ const {
   loginUser,
   GetUser,
   refreshToken,
+  allUser,
 } = require("../controllers/auth-controller");
 const authMiddleware = require("../middleware/auth-middleware");
 const validation = require("../middleware/validation-middleware");
@@ -19,6 +20,6 @@ router.post("/login", validation(LoginValidation), loginUser);
 
 router.get("/getData", authMiddleware, GetUser);
 router.get("/refreshToken", refreshToken);
-
+router.get("/users", authMiddleware, allUser);
 
 module.exports = router;

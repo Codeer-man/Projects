@@ -8,6 +8,7 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("token") || "");
   const authorizeToken = `Bearer ${token}`;
   const [user, setUser] = useState(null);
+  const [alluser, setAllUser] = useState([]);
   const [author, setAuthor] = useState(null);
 
   let loggedIn = !!token;
@@ -100,6 +101,9 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+
+
+
   useEffect(() => {
     if (token) {
       userAuthentication();
@@ -123,6 +127,7 @@ export const AuthProvider = ({ children }) => {
             authorizeToken,
             author,
             fetchWithAuth,
+            alluser,
           }}
         >
           {children}

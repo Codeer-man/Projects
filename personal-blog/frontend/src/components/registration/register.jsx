@@ -14,6 +14,7 @@ export default function Register() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [termsAccepted, setTermsAccepted] = useState(false); // New state for terms acceptance
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -57,10 +58,14 @@ export default function Register() {
     }));
   };
 
+  const handleTermsChange = (e) => {
+    setTermsAccepted(e.target.checked); 
+  };
+
   return (
     <div className="min-h-[90vh] flex items-center justify-center bg-gray-200">
       <div className="w-full max-w-6xl mx-4 bg-white rounded-xl shadow-2xl overflow-hidden flex">
-        {/* Left Side - Image with Overlay */}
+        {/* Left Side  */}
         <div className="hidden md:block md:w-1/2 relative">
           <div
             className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 opacity-90"
@@ -87,7 +92,7 @@ export default function Register() {
           </div>
         </div>
 
-        {/* Right Side - Registration Form */}
+        {/* Right Side */}
         <div className="w-full md:w-1/2 py-12 px-8 md:px-12">
           <div className="text-center mb-10">
             <h2 className="text-3xl font-bold text-gray-800">
@@ -162,6 +167,8 @@ export default function Register() {
                 name="terms"
                 type="checkbox"
                 className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                checked={termsAccepted} 
+                onChange={handleTermsChange} 
                 required
               />
               <label
@@ -178,9 +185,11 @@ export default function Register() {
             <div>
               <button
                 type="submit"
-                disabled={loading}
+                disabled={loading || !termsAccepted} // Disable if not accepted
                 className={`w-full py-3 px-4 bg-gradient-to-r from-blue-600 to-blue-500 text-white font-semibold rounded-lg shadow-md hover:from-blue-700 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 ${
-                  loading ? "opacity-70 cursor-not-allowed" : ""
+                  loading || !termsAccepted
+                    ? "opacity-70 cursor-not-allowed"
+                    : ""
                 }`}
               >
                 {loading ? <LoadingSpinner /> : "Register"}
