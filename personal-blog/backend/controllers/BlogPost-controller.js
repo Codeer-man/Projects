@@ -58,6 +58,7 @@ const CreatePost = async (req, res, next) => {
       content,
       url,
       author: req.id,
+      authorUsername: req.username,
       publicId,
       image: url,
     });
@@ -135,7 +136,7 @@ const DeletePost = async (req, res, next) => {
   }
 };
 
-const userBlog = async (req, res) => {
+const userBlog = async (req, res, next) => {
   const { author } = req.params;
   try {
     if (!author) {
@@ -161,7 +162,7 @@ const userBlog = async (req, res) => {
   }
 };
 
-const postCounter = async (req, res) => {
+const postCounter = async (req, res, next) => {
   try {
     const { author } = req.params;
     const count = await Blogpost.countDocuments({ author: author });

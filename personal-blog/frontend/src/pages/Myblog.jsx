@@ -4,6 +4,7 @@ import { userBlog } from "../services/api";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { toast } from "react-toastify";
 import { FiSearch } from "react-icons/fi";
+import { FaRegCalendarAlt } from "react-icons/fa";
 
 export default function Myblog() {
   const { author } = useParams();
@@ -12,11 +13,14 @@ export default function Myblog() {
   const [error, setError] = useState(null);
   const [filter, setFilter] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const apiUrl = `${import.meta.env.VITE_API_BASE_URL}${
+    import.meta.env.VITE_DELETE_POST
+  } `;
 
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        setLoading(true); // Added loading state when fetch starts
+        setLoading(true);
         const blogs = await userBlog(author);
         if (!blogs || !blogs.data) {
           setError("No posts found");
@@ -118,8 +122,12 @@ export default function Myblog() {
                       : post.content}
                   </p>
                   <div className="flex justify-between items-center">
-                    <div className="text-sm text-gray-500">
-                      {new Date(post.createdAt).toLocaleDateString()}
+                    <div className="text-sm text-gray-500 flex items-center justify-center gap-2">
+                      <FaRegCalendarAlt />
+                      {new Date(post.createdAt).toLocaleDateString("en-US", {
+                        month: "long",
+                        day: "numeric",
+                      })}
                     </div>
                     <div className="flex space-x-2">
                       <Link

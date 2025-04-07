@@ -1,13 +1,16 @@
-const API_URL = "http://localhost:5000/api";
+const API_URL = "http://localhost:5000";
 
 export const fetchBlog = async () => {
   try {
-    const response = await fetch(`${API_URL}/blog/getpost`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await fetch(
+      `${API_URL}${import.meta.env.VITE_GETALL_POST}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     if (!response.ok) {
       throw new Error("Couldn't get post");
     }
@@ -20,12 +23,15 @@ export const fetchBlog = async () => {
 
 export const fetchSingleBlog = async (id) => {
   try {
-    const response = await fetch(`${API_URL}/blog/getPostbyId/${id}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await fetch(
+      `http://localhost:5000/api/blog/getPostbyId/${id}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     if (!response.ok) {
       throw new Error(`Could not get post ${response.status}`);
     }
@@ -38,12 +44,15 @@ export const fetchSingleBlog = async (id) => {
 
 export const userBlog = async (author) => {
   try {
-    const response = await fetch(`${API_URL}/blog/myBlog/${author}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await fetch(
+      `${API_URL}${import.meta.env.VITE_SINGLE_BLOG_POST}/${author}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     if (!response.ok) {
       throw new Error("coulld not get the author data");
     }
@@ -56,12 +65,15 @@ export const userBlog = async (author) => {
 
 export const postCounter = async (author) => {
   try {
-    const count = await fetch(`${API_URL}/blog/count/${author}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const count = await fetch(
+      `${API_URL}${import.meta.env.VITE_POST_COUNTER_POST}/${author}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     if (!count.ok) {
       throw new Error("couldnot count or get the count data");
     }

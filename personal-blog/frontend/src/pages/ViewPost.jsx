@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { fetchSingleBlog } from "../services/api";
 import LoadingSpinner from "../components/LoadingSpinner";
+import { FiCalendar } from "react-icons/fi";
 
 export default function ViewPost() {
   const [blog, setBlog] = useState(null);
@@ -13,7 +14,6 @@ export default function ViewPost() {
     const fetchData = async () => {
       if (id) {
         const response = await fetchSingleBlog(id);
-        console.log("response", response);
 
         setBlog(response.data);
         setLoading(false);
@@ -24,7 +24,6 @@ export default function ViewPost() {
 
   if (loading) return <LoadingSpinner />;
   if (!blog) return <p>Blog not found</p>;
-  console.log("Blog state:", blog);
 
   const handleGoback = () => {
     navigate(-1);
@@ -42,13 +41,17 @@ export default function ViewPost() {
         <div className="p-2 text-2 leading-snug text-gray-700">
           {blog.content}
         </div>
-        <div className="text-[15px] font-normal">
+        <div className="text-[15px] font-normal flex items-center gap-1">
           {" "}
-          Publish Data: {new Date(blog.createdAt).toLocaleDateString()}
+          <FiCalendar /> Publish Data:{" "}
+          {new Date(blog.createdAt).toLocaleDateString("en-US", {
+            month: "long",
+            day: "numeric",
+          })}
         </div>
         <button
           onClick={handleGoback}
-          className="bg-black text-white p-2 rounded-sm hover:bg-gray-700"
+          className="bg-black text-white p-2 rounded-lg hover:bg-gray-700 fixed bottom-6 right-6 cursor-pointer hover:scale-110 transition-all duration-300 "
           to={"/blog-post"}
         >
           Go Back{" "}

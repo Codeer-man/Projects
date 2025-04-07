@@ -1,3 +1,4 @@
+const Role = require("../middleware/Role-middleware");
 const User = require("../model/auth-model");
 const jwt = require("jsonwebtoken");
 
@@ -117,6 +118,35 @@ const allUser = async (req, res) => {
   }
 };
 
+const deleteUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!id) {
+      return res.status(400).json({ message: "User ID is required" });
+    }
+
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    if (user.role === "Admin") {
+      return res.status(500).json({ message: "Not allowed to remove admin " });
+    }
+    const deleteUser = await User.findByIdAndDelete(id);
+    return res.status(200).json({
+      message: "User has been deleted successfully",
+      deletedUser: deleteUser,
+    });
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    return res.status(500).json({
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
+};
+
 const refreshToken = async (req, res) => {
   try {
     const { refreshToken } = req.cookies;
@@ -146,4 +176,11 @@ const refreshToken = async (req, res) => {
   }
 };
 
-module.exports = { CreateUser, loginUser, GetUser, refreshToken, allUser };
+module.exports = {
+  CreateUser,
+  loginUser,
+  GetUser,
+  refreshToken,
+  allUser,
+  deleteUser,
+};

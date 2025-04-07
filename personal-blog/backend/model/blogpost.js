@@ -16,6 +16,11 @@ const BlogpostSchena = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
+    authorUsername: {
+      type: String,
+      require: true,
+      trim: true,
+    },
     url: {
       type: String,
       required: true,

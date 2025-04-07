@@ -14,13 +14,16 @@ export default function Login() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const apiUrl = `${import.meta.env.VITE_API_BASE_URL}${
+    import.meta.env.VITE_USER_LOGIN
+  } `;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:5000/api/auth/login", {
+      const response = await fetch(apiUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

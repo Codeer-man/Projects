@@ -13,6 +13,9 @@ export default function UpdatePost() {
     image: "",
   });
   const { authorizeToken } = useAuth();
+  const apiUrl = `${import.meta.env.VITE_API_BASE_URL}${
+    import.meta.env.VITE_UPDATE_POST
+  } `;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,27 +33,22 @@ export default function UpdatePost() {
     fetchData();
   }, [id]);
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(
-        `http://localhost:5000/api/blog/${id}/update`,
-        {
-          method: "PATCH",
-          headers: {
-            Authorization: authorizeToken,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(update),
-        }
-      );
+      const response = await fetch(`${apiUrl}${id}/update`, {
+        method: "PATCH",
+        headers: {
+          Authorization: authorizeToken,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(update),
+      });
       if (response.ok) {
         const data = await response.json();
         console.log("User updated successfully:", data);
         toast.success("The data has been updated");
         navigate(`/view-post/${id}`);
-        // Optionally clear the form or redirect
         // setUpdate(data.data);
       } else {
         toast.error("Failed to update");
@@ -89,6 +87,7 @@ export default function UpdatePost() {
           onChange={handleChange}
           className="w-full p-2 border border-gray-300 rounded h-32"
         />
+        <img src={update.image} alt="Image" />
         <button
           type="submit"
           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"

@@ -19,11 +19,14 @@ export default function Post() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const apiUrl = `${import.meta.env.VITE_API_BASE_URL}${
+    import.meta.env.VITE_GETALL_POST
+  } `;
 
   useEffect(() => {
     const fetchdata = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/blog/getpost`, {
+        const response = await fetch(apiUrl, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -130,10 +133,15 @@ export default function Post() {
                   <div className="flex items-center text-sm text-gray-500 mb-4">
                     <FiUser className="mr-1" />
                     <span className="mr-3">
-                      {post.author?.username || "Unknown"}
+                      {post.authorUsername || "Unknown"}
                     </span>
                     <FiCalendar className="mr-1" />
-                    <span>{new Date(post.createdAt).toLocaleDateString()}</span>
+                    <span>
+                      {new Date(post.createdAt).toLocaleDateString("en-US", {
+                        month: "long",
+                        day: "numeric",
+                      })}
+                    </span>
                   </div>
                   <Link
                     to={`/view-post/${post._id}`}

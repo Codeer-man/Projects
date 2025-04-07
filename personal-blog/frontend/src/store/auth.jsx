@@ -10,6 +10,12 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [alluser, setAllUser] = useState([]);
   const [author, setAuthor] = useState(null);
+  const apiUrl_REFRESHTOKEN = `${import.meta.env.VITE_API_BASE_URL}${
+    import.meta.env.VITE_REFRESH_TOKEN
+  } `;
+  const apiUrl_USER = `${import.meta.env.VITE_API_BASE_URL}${
+    import.meta.env.VITE_USER_DATA
+  } `;
 
   let loggedIn = !!token;
 
@@ -26,7 +32,7 @@ export const AuthProvider = ({ children }) => {
 
   const refreshAccessToken = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/auth/refreshToken", {
+      const res = await fetch(apiUrl_REFRESHTOKEN, {
         method: "GET",
         credentials: "include",
       });
@@ -73,7 +79,7 @@ export const AuthProvider = ({ children }) => {
   const userAuthentication = async () => {
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:5000/api/auth/getData", {
+      const response = await fetch(apiUrl_USER, {
         method: "GET",
         headers: {
           Authorization: authorizeToken,
@@ -100,9 +106,6 @@ export const AuthProvider = ({ children }) => {
       setLoading(false);
     }
   };
-
-
-
 
   useEffect(() => {
     if (token) {

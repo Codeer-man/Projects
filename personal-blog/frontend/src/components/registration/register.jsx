@@ -6,6 +6,9 @@ import bgImage from "../assets/bg.png";
 
 export default function Register() {
   const navigate = useNavigate();
+  const apiUrl = `${import.meta.env.VITE_API_BASE_URL}${
+    import.meta.env.VITE_USER_REGISTER
+  } `;
 
   const [register, setRegister] = useState({
     username: "",
@@ -14,15 +17,14 @@ export default function Register() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [termsAccepted, setTermsAccepted] = useState(false); // New state for terms acceptance
-
+  const [termsAccepted, setTermsAccepted] = useState(false);
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
     try {
-      const response = await fetch("http://localhost:5000/api/auth/register", {
+      const response = await fetch(apiUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -59,7 +61,7 @@ export default function Register() {
   };
 
   const handleTermsChange = (e) => {
-    setTermsAccepted(e.target.checked); 
+    setTermsAccepted(e.target.checked);
   };
 
   return (
@@ -167,8 +169,8 @@ export default function Register() {
                 name="terms"
                 type="checkbox"
                 className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                checked={termsAccepted} 
-                onChange={handleTermsChange} 
+                checked={termsAccepted}
+                onChange={handleTermsChange}
                 required
               />
               <label
