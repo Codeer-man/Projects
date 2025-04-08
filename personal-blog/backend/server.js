@@ -21,6 +21,7 @@ const errorhandling = require("./middleware/errorhandling-middleware");
 // Routes
 const blogRoute = require("./routes/BlodPost-route");
 const authRoute = require("./routes/auth-route");
+const profileRoute = require("./routes/profile-route");
 
 // passport import
 const passport = require("./config/passport");
@@ -74,6 +75,7 @@ app.use(express.urlencoded({ limit: "20mb", extended: true }));
 // router
 app.use("/api/blog", blogRoute);
 app.use("/api/auth", authRoute);
+app.use("/api/profile", profileRoute);
 
 // error handling
 app.use(errorhandling);

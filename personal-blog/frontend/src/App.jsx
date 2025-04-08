@@ -20,6 +20,7 @@ import Logout from "./components/registration/logout";
 import Profile from "./pages/Profile";
 import Myblog from "./pages/Myblog";
 import Admin from "./pages/Admin";
+import ProfileForm from "./pages/createProfile";
 export default function App() {
   return (
     <Router>
@@ -39,6 +40,9 @@ export default function App() {
         <Route path="/MyBlog/:author" element={<Myblog />} />
         {/* admin  */}
         <Route path="/admin" element={<Admin />} />
+
+        {/* profile  */}
+        <Route path="/createProfile/:id" element={<ProfileForm />} />
 
         {/* not fount  */}
         <Route path="*" element={<NotFound />} />

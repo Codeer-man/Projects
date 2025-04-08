@@ -1,40 +1,89 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useAuth } from "../store/auth";
 import { postCounter } from "../services/api";
-import TooltipButton from "../components/button/Tooltipbutton";
 import LoadingSpinner from "../components/LoadingSpinner";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Profile() {
   const { author, user } = useAuth();
+  const { id } = useParams();
   const [loading, setLoading] = useState(false);
   const [count, setCount] = useState(null);
+  const [profile, setProfile] = useState(null);
+
+  const apiUrl = `${import.meta.env.VITE_API_BASE_URL}${
+    import.meta.env.VITE_GET_PROFILE
+  }/${id || user?.data?._id}`;
+
+  // fetch profile
+  const profileFetch = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(apiUrl, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error("Failed to fetch profile");
+      }
+
+      const data = await response.json();
+      console.log("API response data:", data);
+      setProfile(data);
+    } catch (error) {
+      toast.error(error.message);
+      console.error("Profile fetch error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // fetch post count
+  const fetchPostCount = async () => {
+    try {
+      setLoading(true);
+      const response = await postCounter(author);
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch post count");
+      }
+
+      const data = await response.json();
+      setCount(data.count);
+    } catch (error) {
+      toast.error(error.message);
+      console.error("Post count error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    setLoading(true);
-    const fetch = async () => {
-      try {
-        const count = await postCounter(author);
-        if (count.ok) {
-          const data = await count.json();
-          return setCount(data.count);
-        }
-        return console.error("Could not count");
-      } catch (error) {
-        throw new Error(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetch();
-  }, [author]);
+    if (user?.data?._id) {
+      profileFetch();
+      fetchPostCount();
+    }
+  }, [user, author]);
 
   if (loading) {
     return <LoadingSpinner />;
   }
 
-  console.log(user);
-  console.log(author);
+  if (!user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p>Please login to view your profile</p>
+        <Link to="/login" className="text-indigo-600 ml-2">
+          Login
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-12 px-4">
@@ -43,7 +92,10 @@ export default function Profile() {
           <div className="relative h-48 bg-gradient-to-r from-indigo-500 to-purple-600">
             <div className="absolute -bottom-16 left-1/2 transform -translate-x-1/2">
               <img
-                src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&h=200&q=80"
+                src={
+                  profile?.data.profilePic ||
+                  "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&h=200&q=80"
+                }
                 alt="Profile"
                 className="w-32 h-32 rounded-full object-cover border-4 border-white shadow-lg"
               />
@@ -53,6 +105,9 @@ export default function Profile() {
             <h1 className="text-3xl font-bold text-gray-800">
               {user.data.username}
             </h1>
+            <h3 className="text-gray-400">
+              @{profile?.data.username || null}{" "}
+            </h3>
             <p className="text-gray-500 mt-2">
               Member since{" "}
               {new Date(user.data.createdAt).toLocaleDateString("en-US", {
@@ -64,7 +119,9 @@ export default function Profile() {
 
             <div className="flex justify-center gap-8 mt-6">
               <div className="text-center">
-                <p className="text-2xl font-bold text-indigo-600">{count}</p>
+                <p className="text-2xl font-bold text-indigo-600">
+                  {count || 0}
+                </p>
                 <p className="text-gray-500 text-sm">Posts</p>
               </div>
               <div className="text-center">
@@ -95,14 +152,21 @@ export default function Profile() {
             <div className="mt-8 text-left bg-gray-50 p-4 rounded-lg">
               <h3 className="font-semibold text-gray-700 mb-2">About Me</h3>
               <p className="text-gray-600">
-                Passionate blogger sharing thoughts on technology, lifestyle,
-                and creative writing. Love connecting with readers and fellow
-                writers!
+                {profile?.data.AboutMe ||
+                  "Passionate blogger sharing thoughts on technology, lifestyle, and creative writing."}
               </p>
             </div>
-            <div className="mt-6 flex justify-center">
-              <TooltipButton />
-            </div>
+
+            {!profile ? (
+              <div className="mt-6 flex justify-center">
+                <Link
+                  to={`/createProfile/${user.data._id}`}
+                  className="text-indigo-600 hover:underline"
+                >
+                  Create your profile
+                </Link>
+              </div>
+            ) : null}
           </div>
         </div>
 
@@ -132,6 +196,7 @@ export default function Profile() {
           </div>
         </div>
       </div>
+      {/* <ToastContainer position="top-right" autoClose={3000} /> */}
     </div>
   );
 }
