@@ -43,3 +43,36 @@ const BlogpostSchena = new mongoose.Schema(
 BlogpostSchena.indexes({ title: 1 });
 
 module.exports = mongoose.model("Blogpost", BlogpostSchena);
+
+// updated schema
+
+// const mongoose = require("mongoose");
+
+// const BlogpostSchena = new mongoose.Schema(
+//   {
+//     author: {
+//       type: mongoose.Schema.Types.ObjectId,
+//       ref: "user",
+//       require: true,
+//     },
+//     title: {
+//       type: String,
+//       require: true,
+//     },
+//     content: {
+//       type: {
+//         type: String,
+//         enum: ["text", "image"],
+//         require: true,
+//       },
+//       value: {
+//         type: mongoose.Schema.Types.Mixed,
+//         require: true,
+//       },
+//     },
+//     tags: [String],
+//   },
+//   { timestamps: true }
+// );
+
+// module.exports = mongoose.model("Blogpost", BlogpostSchena);

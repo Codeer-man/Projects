@@ -29,14 +29,6 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "User",
     },
-    // createAt: {
-    //   type: Date,
-    //   default: Date.now,
-    // },
-    // updatedAt: {
-    //   type: Date,
-    //   default: Date.now,
-    // },
   },
   { versionKey: false, strictQuery: true, timestamps: true }
 );
