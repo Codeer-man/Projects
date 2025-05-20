@@ -6,8 +6,10 @@ import generateToken from "../utils/generateToken.js";
 import TryCatch from "../utils/trycatch.js";
 import { AuthRequest } from "../middleware/auth.middeware.js";
 import getBuffer from "../utils/dataUri.js";
-import cloudinary from "../config/cloudinary.js";
+
 import { Types } from "mongoose";
+import cloudinary from "../config/cloudinary.js";
+import { deleteFromCloudinary } from "../lib/cloudinary.js";
 
 export const loginUser = async (
   req: Request,
@@ -137,7 +139,6 @@ export const updateProfileImage = async (
   logger.info("Update profile image endpoint hit...");
   try {
     const file = req.file;
-    console.log(file);
 
     if (!file) {
       throw new ErrorHandling("No file uploaded", 400, false);
@@ -149,18 +150,29 @@ export const updateProfileImage = async (
       throw new ErrorHandling("File buffer is empty", 500, false);
     }
 
+    if (!req.user) {
+      throw new ErrorHandling("Authentication is required", 429, false);
+    }
+
+    const existingUser = await User.findById(req.user.id);
+    if (!existingUser) {
+      throw new ErrorHandling("User not found", 404, false);
+    }
+
+    if (existingUser.public_id) {
+      await deleteFromCloudinary(existingUser.public_id);
+    }
+
     const cloud = await cloudinary.uploader.upload(fileBuffer.content, {
       folder: "blogs",
     });
-
-    console.log(cloud, "cloud data");
 
     if (!req.user) {
       throw new ErrorHandling("User not authenticated", 401, false);
     }
     const user = await User.findByIdAndUpdate(
       req.user.id,
-      { image: cloud.secure_url },
+      { image: cloud.secure_url, public_id: cloud.public_id },
       { new: true }
     );
 

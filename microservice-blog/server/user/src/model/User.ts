@@ -9,6 +9,7 @@ export interface IUser extends Document {
   facebook: string;
   linkedin: string;
   bio: string;
+  public_id: string;
 }
 
 const schema: Schema<IUser> = new Schema(
@@ -25,11 +26,14 @@ const schema: Schema<IUser> = new Schema(
     image: {
       type: String,
       required: true,
+      default:
+        "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg",
     },
     instagram: String,
     facebook: String,
     linkedin: String,
     bio: String,
+    public_id: String,
   },
   {
     timestamps: true,

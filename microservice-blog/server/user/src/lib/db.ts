@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import logger from "./logger.js";
+import logger from "../utils/logger.js";
 
 const URI =
   (process.env.MONGODB_URI as string) || "mongodb://localhost:27017/user";

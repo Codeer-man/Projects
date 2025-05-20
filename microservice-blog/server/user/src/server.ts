@@ -1,11 +1,12 @@
 import dotenv from "dotenv";
 dotenv.config();
 import express, { Request, Response } from "express";
-import connectDB from "./utils/db.js";
+
 import UserRoute from "./routes/user.routes.js";
 import errorhanlder from "./middleware/errorhandler.middleware.js";
 import logger from "./utils/logger.js";
 import helmet from "helmet";
+import connectDB from "./lib/db.js";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
