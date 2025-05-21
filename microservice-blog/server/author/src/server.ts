@@ -1,12 +1,16 @@
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
 import logger from "./utils/logger";
 import dotenv from "dotenv";
 import { sql } from "./config/db";
 import blogRouter from "./routes/blog";
+
 dotenv.config();
 
 const app = express();
+
 const PORT = process.env.PORT;
+
+app.use(express.json());
 async function initdb() {
   try {
     await sql`
@@ -50,8 +54,20 @@ async function initdb() {
 
 app.use("/api/v1", blogRouter);
 
-initdb().then(() => {
-  app.listen(PORT, () => {
-    logger.info(`Server is running on port ${PORT}`);
+initdb()
+  .then(() => {
+    app.listen(PORT, () => {
+      logger.info(`Server is running on port ${PORT}`);
+    });
+  })
+  .catch((err: any) => {
+    logger.error(
+      "Error while connecting to the database or creating tables",
+      err
+    );
+    process.exit(1);
   });
+
+process.on("unhandledRejection", (err) => {
+  logger.error("error in the process", err);
 });

@@ -5,6 +5,7 @@ import ErrorHanldling from "../utils/errorhanlding";
 import logger from "../utils/logger";
 
 interface IUser extends Document {
+  id: string;
   name: string;
   email: string;
   image: string;
@@ -25,12 +26,11 @@ export const authMiddleware = async (
 ) => {
   try {
     const authHeader = req.headers.authorization;
-    const token = authHeader?.split("")[1];
+    const token = authHeader?.split(" ")[1];
 
     if (!token) {
       throw new ErrorHanldling("Token not provided", 403, false);
     }
-
     const decode = jwt.verify(
       token,
       process.env.JWT_ACCESS_TOKEN as string
