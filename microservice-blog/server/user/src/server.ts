@@ -7,12 +7,14 @@ import errorhanlder from "./middleware/errorhandler.middleware.js";
 import logger from "./utils/logger.js";
 import helmet from "helmet";
 import connectDB from "./lib/db.js";
+import cors from "cors";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
 app.use(helmet());
+app.use(cors());
 
 connectDB();
 

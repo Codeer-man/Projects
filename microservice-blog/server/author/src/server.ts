@@ -3,6 +3,7 @@ import logger from "./utils/logger";
 import dotenv from "dotenv";
 import { sql } from "./config/db";
 import blogRouter from "./routes/blog";
+import errorHandler from "./middleware/errorhandler.middleware";
 
 dotenv.config();
 
@@ -53,6 +54,8 @@ async function initdb() {
 }
 
 app.use("/api/v1", blogRouter);
+
+app.use(errorHandler);
 
 initdb()
   .then(() => {
